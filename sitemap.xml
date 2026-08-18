@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://markmyshot.com/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://markmyshot.com/"/>
+    <xhtml:link rel="alternate" hreflang="he" href="https://markmyshot.com/he.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://markmyshot.com/fr.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://markmyshot.com/de.html"/>
+  </url>
+  <url><loc>https://markmyshot.com/he.html</loc></url>
+  <url><loc>https://markmyshot.com/fr.html</loc></url>
+  <url><loc>https://markmyshot.com/de.html</loc></url>
+  <url><loc>https://markmyshot.com/privacy.html</loc></url>
+</urlset>
