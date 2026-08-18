@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MarkMyShot — Capture, Mark, Done</title>
+<meta name="description" content="MarkMyShot is a fast Windows screenshot tool with powerful annotation: arrows, text, blur, numbered steps and callouts. 100% local — your screenshots never leave your computer.">
+<style>
+  :root{
+    --accent:#FF8600; --accent-dark:#E27300;
+    --ink:#1c1e21; --ink-soft:#4b5058; --bg:#ffffff; --bg-soft:#f6f7f9;
+    --card:#ffffff; --line:#e3e6ea; --hero:#151a21; --hero-ink:#f2f4f7;
+    --good:#2e9e5b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+  a{color:var(--accent-dark)}
+
+  /* ---------- Hero ---------- */
+  header{background:var(--hero);color:var(--hero-ink);padding:20px 0 64px}
+  nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:56px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;color:var(--hero-ink);text-decoration:none}
+  .logo-mark{width:34px;height:34px;border-radius:8px;background:var(--accent);display:grid;place-items:center;font-size:18px}
+  nav .links a{color:#c8cdd4;text-decoration:none;margin-left:26px;font-size:14.5px}
+  nav .links a:hover{color:#fff}
+  .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+  .hero h1{font-size:44px;line-height:1.15;letter-spacing:-.5px}
+  .hero h1 em{color:var(--accent);font-style:normal}
+  .hero p.sub{margin-top:18px;font-size:18px;color:#b9c0c9;max-width:44ch}
+  .cta-row{margin-top:30px;display:flex;gap:14px;flex-wrap:wrap}
+  .btn{display:inline-block;padding:14px 26px;border-radius:10px;font-weight:600;font-size:16px;text-decoration:none;transition:.15s}
+  .btn-primary{background:var(--accent);color:#1b1b1b}
+  .btn-primary:hover{background:#ff9b2e}
+  .btn-ghost{border:1px solid #3a414b;color:#e6e9ee}
+  .btn-ghost:hover{border-color:#828a95}
+  .cta-note{margin-top:12px;font-size:13px;color:#8f97a2}
+  .shot-frame{background:#20262f;border:1px solid #333b46;border-radius:14px;padding:10px;box-shadow:0 24px 60px rgba(0,0,0,.45)}
+  .shot-frame img{width:100%;display:block;border-radius:8px}
+  .shot-placeholder{aspect-ratio:16/10;border-radius:8px;background:
+      repeating-conic-gradient(#2a313b 0% 25%, #232932 0% 50%) 0 0/28px 28px;
+      display:grid;place-items:center;color:#8f97a2;font-size:14px;text-align:center;padding:20px}
+
+  /* ---------- Sections ---------- */
+  section{padding:64px 0}
+  section.alt{background:var(--bg-soft)}
+  h2{font-size:30px;letter-spacing:-.3px;margin-bottom:8px}
+  .lead{color:var(--ink-soft);font-size:16.5px;max-width:62ch}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:34px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px}
+  .card .ico{font-size:26px}
+  .card h3{font-size:16.5px;margin:10px 0 6px}
+  .card p{font-size:14px;color:var(--ink-soft)}
+
+  /* ---------- Privacy strip ---------- */
+  .privacy{display:flex;gap:18px;align-items:flex-start;background:#0f2c1c;color:#dff3e6;border-radius:14px;padding:26px 30px;margin-top:34px}
+  .privacy .lock{font-size:34px}
+  .privacy h3{font-size:19px;margin-bottom:4px}
+  .privacy p{font-size:14.5px;color:#b9dcc6}
+
+  /* ---------- Pricing ---------- */
+  .price-box{max-width:430px;margin:34px auto 0;background:var(--card);border:2px solid var(--accent);border-radius:16px;padding:34px;text-align:center;box-shadow:0 18px 44px rgba(255,134,0,.12)}
+  .price{font-size:52px;font-weight:800;letter-spacing:-1px}
+  .price small{font-size:17px;font-weight:500;color:var(--ink-soft)}
+  .price-box ul{list-style:none;margin:20px 0 26px;text-align:start}
+  .price-box li{padding:7px 0;font-size:15px}
+  .price-box li::before{content:"✓";color:var(--good);font-weight:700;margin-inline-end:10px}
+  .trust{display:flex;gap:12px;align-items:flex-start;background:#f2f8f4;border:1px solid #d6e8dc;border-radius:10px;padding:14px 16px;margin-top:22px;text-align:start}
+  .trust p{font-size:12.5px;color:#3c5b47}
+
+  /* ---------- FAQ ---------- */
+  .faq{max-width:760px;margin-top:26px}
+  .faq details{border-bottom:1px solid var(--line);padding:16px 4px}
+  .faq summary{cursor:pointer;font-weight:600;font-size:16px}
+  .faq p{margin-top:10px;color:var(--ink-soft);font-size:15px}
+
+  /* ---------- Footer ---------- */
+  footer{background:var(--hero);color:#9aa2ad;padding:36px 0;font-size:13.5px}
+  footer .cols{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  footer a{color:#c8cdd4;text-decoration:none}
+  footer a:hover{color:#fff}
+
+  @media (max-width:860px){
+    .hero{grid-template-columns:1fr}
+    .grid{grid-template-columns:1fr 1fr}
+    .hero h1{font-size:34px}
+  }
+  @media (max-width:560px){
+    .grid{grid-template-columns:1fr}
+    nav .links{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <a class="logo" href="#"><span class="logo-mark">✏️</span> MarkMyShot</a>
+      <div class="links">
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+        <a href="mailto:support@markmyshot.com">Support</a>
+      </div>
+    </nav>
+    <div class="hero">
+      <div>
+        <h1>Capture the screen.<br><em>Mark</em> what matters.<br>Done in seconds.</h1>
+        <p class="sub">MarkMyShot is a fast Windows screenshot tool with annotation that feels effortless — arrows, text, blur, numbered steps and callouts. Built for how you actually explain things.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#pricing" id="download-btn">Download free trial</a>
+          <a class="btn btn-ghost" href="#pricing">Buy a license</a>
+        </div>
+        <p class="cta-note">Free 30-day trial • No account needed • Windows 10/11</p>
+      </div>
+      <div class="shot-frame">
+        <img src="hero.jpg" alt="MarkMyShot capturing a dashboard: a selection frame with size badge, colorful arrows, a callout bubble and a checklist overlay">
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="features">
+  <div class="wrap">
+    <h2>Everything you need to explain a screen</h2>
+    <p class="lead">One tool from capture to “here, look at this” — without a heavyweight editor.</p>
+    <div class="grid">
+      <div class="card"><div class="ico">📸</div><h3>Instant region capture</h3><p>Press PrintScreen, drag, done. Multi-monitor and mixed-DPI aware, with a frozen preview so nothing moves while you select.</p></div>
+      <div class="card"><div class="ico">📜</div><h3>Scrolling capture</h3><p>Capture long pages and chats — scroll while MarkMyShot stitches everything into one tall image.</p></div>
+      <div class="card"><div class="ico">➡️</div><h3>Arrows, shapes & text</h3><p>Clean annotations with full control of color, thickness and fill. Everything stays editable — move and restyle any time.</p></div>
+      <div class="card"><div class="ico">🕶️</div><h3>Real blur for privacy</h3><p>Hide names, emails and numbers with smooth blur, pixelation, or solid color. What's hidden is truly destroyed — not recoverable.</p></div>
+      <div class="card"><div class="ico">🔢</div><h3>Numbered steps & callouts</h3><p>Turn any screenshot into a how-to: auto-numbered step markers and speech-bubble callouts with your text.</p></div>
+      <div class="card"><div class="ico">🎨</div><h3>Your style, saved</h3><p>Save tool presets — your arrow, your highlight color, your callout style — and apply them in one click.</p></div>
+      <div class="card"><div class="ico">🗂️</div><h3>Automatic history</h3><p>Every capture is saved and searchable. Copy several screenshots at once and paste them one by one with Win+V.</p></div>
+      <div class="card"><div class="ico">↩️</div><h3>Undo that survives</h3><p>Unlimited-feeling undo that's saved with the file — close the app, reopen tomorrow, and keep pressing Ctrl+Z.</p></div>
+      <div class="card"><div class="ico">🌍</div><h3>Speaks your language</h3><p>English, French, German and Hebrew (with full right-to-left support) — detected automatically.</p></div>
+    </div>
+
+    <div class="privacy">
+      <div class="lock">🔒</div>
+      <div>
+        <h3>100% local. Zero cloud.</h3>
+        <p>Your screenshots never leave your computer. No account, no upload, no telemetry, no third-party code. That's not a promise buried in a policy — it's how MarkMyShot is built.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="in-action">
+  <div class="wrap">
+    <h2>The real thing</h2>
+    <p class="lead">An actual, unretouched screenshot of MarkMyShot — captured by MarkMyShot. Numbered steps, arrows, a callout and a frame on a live page, with every object still editable, and your full capture history one click away.</p>
+    <div class="shot-frame" style="margin-top:30px">
+      <img src="editor.jpg" alt="Actual MarkMyShot editor window: toolbar with capture and annotation tools, an annotated web page with steps, arrows and a callout, tool properties panel, and the history strip">
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <h2 style="text-align:center">Simple pricing</h2>
+    <p class="lead" style="text-align:center;margin:0 auto">Try everything free for 30 days. Pay once if it earns its place.</p>
+    <div class="price-box">
+      <div class="price">$15 <small>one-time</small></div>
+      <ul>
+        <li>Lifetime license — pay once, use forever</li>
+        <li>All features, all future updates included</li>
+        <li>30-day free trial before you decide</li>
+        <li>14-day money-back guarantee</li>
+        <li>Email support: support@markmyshot.com</li>
+      </ul>
+      <!-- TODO: replace href with Lemon Squeezy checkout URL -->
+      <a class="btn btn-primary" href="#" id="buy-btn" style="width:100%">Buy MarkMyShot</a>
+      <div class="trust">
+        <div>🔒</div>
+        <p>Secure checkout by <strong>Lemon Squeezy</strong>, a trusted payment platform used by thousands of software companies. They handle payment, tax and your invoice — card details never reach us. Feel free to look them up before buying.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2>Questions & answers</h2>
+    <div class="faq">
+      <details>
+        <summary>What are the system requirements?</summary>
+        <p>Windows 10 or Windows 11, 64-bit. No installation of extra runtimes needed — download, run, capture.</p>
+      </details>
+      <details>
+        <summary>Do my screenshots get uploaded anywhere?</summary>
+        <p>Never. MarkMyShot makes zero network connections. Screenshots are saved to a folder you choose on your own disk, and that's the only place they exist.</p>
+      </details>
+      <details>
+        <summary>What happens when the 30-day trial ends?</summary>
+        <p>You keep full access to viewing, editing and copying your existing screenshots. Only capturing new ones requires a license — your work is never held hostage.</p>
+      </details>
+      <details>
+        <summary>Is it really pay-once? No subscription?</summary>
+        <p>Yes. One payment, lifetime license, and all future updates are included.</p>
+      </details>
+      <details>
+        <summary>What's the refund policy?</summary>
+        <p>If MarkMyShot isn't for you, email us within 14 days of purchase and you'll get a full refund. No forms, no questions.</p>
+      </details>
+      <details>
+        <summary>Can I move my license to a new computer?</summary>
+        <p>Yes — deactivate it in the app (License window) and activate on the new machine with the same key.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>© 2026 Shimon Barav · MarkMyShot</div>
+      <div>
+        <a href="mailto:support@markmyshot.com">support@markmyshot.com</a>
+        &nbsp;·&nbsp; <a href="eula.html">License agreement</a>
+        &nbsp;·&nbsp; <a href="privacy.html">Privacy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
